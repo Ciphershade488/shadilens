@@ -71,12 +71,12 @@ const SPECIAL_ADD_ONS = [
 ];
 
 const PORTFOLIO = [
-  { image: "/special-1.jpg" },
-  { image: "/special-2.jpg" },
-  { image: "/special-3.jpg" },
-  { image: "/special-4.jpg" },
-  { image: "/special-5.jpg" },
-  { image: "/special-6.jpg" },
+  { youtubeLink: "", image: "/special-1.jpg" },
+  { youtubeLink: "", image: "/special-2.jpg" },
+  { youtubeLink: "", image: "/special-3.jpg" },
+  { youtubeLink: "", image: "/special-4.jpg" },
+  { youtubeLink: "", image: "/special-5.jpg" },
+  { youtubeLink: "", image: "/special-6.jpg" },
 ];
 
 // Automatically generates 33 items: /photo-1.jpg to /photo-33.jpg
@@ -215,8 +215,8 @@ const Navbar = () => {
             alt="SL Logo" 
             className="h-10 w-10 md:h-12 md:w-12 object-contain"
             onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = "https://ui-avatars.com/api/?name=SL&background=0a0a0a&color=d4af37&size=128&font-size=0.4";
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = "https://ui-avatars.com/api/?name=SL&background=0a0a0a&color=d4af37&size=128&font-size=0.4";
             }}
           />
           <h1 className="font-display text-2xl md:text-3xl tracking-tighter text-[#d4af37] font-bold hover:drop-shadow-[0_0_10px_rgba(212,175,55,0.8)] transition-all duration-500 py-1 rounded">SHAADI LENS</h1>
@@ -329,18 +329,21 @@ const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) 
       {/* Thumbnail Card */}
       <div
         onClick={handleClick}
-        className={`relative flex-shrink-0 ${layoutClasses} rounded-md overflow-hidden cursor-pointer group bg-black/20 hover:scale-105 hover:z-50 transition-all duration-400 ease-out`}
+        className={`relative flex-shrink-0 ${layoutClasses} rounded-md overflow-hidden cursor-pointer group bg-[#141414] hover:scale-105 hover:z-50 transition-all duration-400 ease-out`}
       >
-        {/* If no youtube video, render image as base */}
-        <img 
-          src={item.image} 
-          alt="" 
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 text-transparent" 
-        />
+        {/* If no youtube video, render image as base. Will hide broken icon via onError if missing */}
+        {!ytId && (
+          <img 
+            src={item.image} 
+            alt="" 
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 text-transparent" 
+            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+          />
+        )}
 
         {/* If youtubeLink is provided, overlay a muted, autoplaying iframe */}
         {ytId && (
-          <div className="absolute inset-0 pointer-events-none overflow-hidden bg-black/40">
+          <div className="absolute inset-0 pointer-events-none overflow-hidden bg-[#141414]">
             <iframe
               src={`https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}&controls=0&showinfo=0&rel=0&playsinline=1`}
               className="absolute top-1/2 left-1/2 w-[150%] h-[150%] md:w-[130%] md:h-[130%] -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-80"
@@ -383,6 +386,7 @@ const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) 
             alt="" 
             className="max-w-full max-h-[85vh] object-contain rounded-sm shadow-[0_0_50px_rgba(0,0,0,0.8)] cursor-zoom-out text-transparent"
             onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} 
+            onError={(e) => { e.currentTarget.style.display = 'none'; }}
           />
         </div>,
         document.body
