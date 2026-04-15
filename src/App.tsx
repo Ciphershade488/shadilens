@@ -78,9 +78,11 @@ const PORTFOLIO = [
   { image: "/special-6.jpg" },
 ];
 
-// Automatically generates 20 items: /photo-1.jpg to /photo-20.jpg
-const PHOTOGRAPHY = Array.from({ length: 20 }, (_, i) => ({
-  image: `/photo-${i + 1}.jpg`
+// Automatically generates 33 items: /photo-1.jpg to /photo-33.jpg
+// The 28th photo is flagged to display as landscape
+const PHOTOGRAPHY = Array.from({ length: 33 }, (_, i) => ({
+  image: `/photo-${i + 1}.jpg`,
+  isLandscape: (i + 1) === 28
 }));
 
 const PACKAGES = [
@@ -304,7 +306,8 @@ const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) 
     }
   };
 
-  const layoutClasses = isPortrait
+  // Ensure 28th photo renders as landscape even in portrait sections
+  const layoutClasses = (isPortrait && !item.isLandscape)
     ? "w-[160px] sm:w-[220px] md:w-[280px] aspect-[9/16]"
     : "w-[240px] sm:w-[320px] md:w-[400px] aspect-video";
 
@@ -351,21 +354,22 @@ const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) 
       {/* Fullscreen Image Modal (Lightbox) - Only if NOT a youtube link */}
       {isOpen && !ytId && (
         <div 
-          className="fixed inset-0 z-[200] bg-black/95 flex flex-col items-center justify-center p-4 sm:p-8 backdrop-blur-md cursor-zoom-out"
+          className="fixed inset-0 z-[9999] bg-black/95 flex flex-col items-center justify-center p-4 sm:p-8 backdrop-blur-lg cursor-zoom-out"
           onClick={() => setIsOpen(false)}
         >
           <button 
-            className="absolute top-6 right-6 md:top-10 md:right-10 text-white/70 hover:text-[#d4af37] transition-colors z-50 bg-black/50 rounded-full p-2 border border-white/10 hover:border-[#d4af37]/50"
-            onClick={() => setIsOpen(false)}
+            className="absolute top-6 right-6 md:top-10 md:right-10 text-white hover:text-[#d4af37] transition-all z-[10000] bg-black/80 rounded-full p-3 border border-white/20 hover:border-[#d4af37]/50 flex items-center gap-2 shadow-2xl hover:scale-110"
+            onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
           >
-            <X size={28} />
+            <X size={24} />
+            <span className="hidden md:block text-xs font-bold tracking-widest uppercase">Close</span>
           </button>
           
           <img 
             src={item.image} 
             alt="" 
-            className="max-w-full max-h-[85vh] object-contain rounded-sm shadow-[0_0_50px_rgba(0,0,0,0.8)] cursor-default text-transparent"
-            onClick={(e) => e.stopPropagation()} 
+            className="max-w-full max-h-[85vh] object-contain rounded-sm shadow-[0_0_50px_rgba(0,0,0,0.8)] cursor-zoom-out text-transparent"
+            onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} 
           />
         </div>
       )}
