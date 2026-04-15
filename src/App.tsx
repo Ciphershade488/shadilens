@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   Play, 
   Info, 
@@ -288,6 +289,18 @@ const Navbar = () => {
 const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  // Prevent body scrolling when the image modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   // Helper to extract YouTube video ID from various link formats
   const getYoutubeId = (url: string) => {
     if (!url) return null;
@@ -351,8 +364,8 @@ const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) 
         )}
       </div>
 
-      {/* Fullscreen Image Modal (Lightbox) - Only if NOT a youtube link */}
-      {isOpen && !ytId && (
+      {/* Fullscreen Image Modal (Lightbox) - Uses React Portal to escape z-index trapping */}
+      {isOpen && !ytId && createPortal(
         <div 
           className="fixed inset-0 z-[9999] bg-black/95 flex flex-col items-center justify-center p-4 sm:p-8 backdrop-blur-lg cursor-zoom-out"
           onClick={() => setIsOpen(false)}
@@ -371,7 +384,8 @@ const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) 
             className="max-w-full max-h-[85vh] object-contain rounded-sm shadow-[0_0_50px_rgba(0,0,0,0.8)] cursor-zoom-out text-transparent"
             onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} 
           />
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
