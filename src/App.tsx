@@ -23,33 +23,34 @@ import {
 } from 'lucide-react';
 
 // --- Constants ---
-const waLink = "https://wa.me/919511161164";
+const waMessage = encodeURIComponent("Hi Shaadi Lens, need details.");
+const waLink = `https://wa.me/919511161164?text=${waMessage}`;
 
 // --- Data ---
 const SERVICES = [
   {
-    youtubeLink: "https://youtu.be/-AQT1uXN504", // Vikram Bhaiya Director - Link 1
+    youtubeLink: "https://youtu.be/gktn9ZR9hn4", // Moved to first
+    image: "/film-6.jpg",
+  },
+  {
+    youtubeLink: "https://youtu.be/-AQT1uXN504", 
     image: "/film-1.jpg",
   },
   {
-    youtubeLink: "https://youtu.be/DT-XInvp2xE", // Vikram Bhaiya Director - Link 2
+    youtubeLink: "https://youtu.be/DT-XInvp2xE", 
     image: "/film-2.jpg",
   },
   {
-    youtubeLink: "https://youtu.be/KbWC5BoVQZs", // Vikram Bhaiya Director - Link 3
+    youtubeLink: "https://youtu.be/KbWC5BoVQZs", 
     image: "/film-3.jpg",
   },
   {
-    youtubeLink: "https://youtu.be/63ojfDqq7QY", // Vikram Bhaiya Director - Link 4
+    youtubeLink: "https://youtu.be/63ojfDqq7QY", 
     image: "/film-4.jpg",
   },
   {
-    youtubeLink: "https://youtu.be/_PbXisbjBxc", // Vikram Bhaiya Director - Link 5
+    youtubeLink: "https://youtu.be/_PbXisbjBxc", 
     image: "/film-5.jpg",
-  },
-  {
-    youtubeLink: "https://youtu.be/gktn9ZR9hn4", // Vikram Bhaiya Director - Link 6
-    image: "/film-6.jpg",
   }
 ];
 
@@ -71,20 +72,27 @@ const SPECIAL_ADD_ONS = [
 ];
 
 const PORTFOLIO = [
-  { youtubeLink: "", image: "/special-1.jpg" },
-  { youtubeLink: "", image: "/special-2.jpg" },
-  { youtubeLink: "", image: "/special-3.jpg" },
-  { youtubeLink: "", image: "/special-4.jpg" },
-  { youtubeLink: "", image: "/special-5.jpg" },
-  { youtubeLink: "", image: "/special-6.jpg" },
+  { youtubeLink: "https://youtube.com/shorts/Ob0QiVyGAf8?feature=share", image: "/special-1.jpg" },
+  { youtubeLink: "https://youtube.com/shorts/soyL0Swh4rk?feature=share", image: "/special-2.jpg" },
+  { youtubeLink: "https://youtube.com/shorts/I8pJdFVa4qE?feature=share", image: "/special-3.jpg" },
+  { youtubeLink: "https://youtube.com/shorts/2zy2IMn-myk?feature=share", image: "/special-4.jpg" },
+  { youtubeLink: "https://youtube.com/shorts/3lx5--WSsdA?feature=share", image: "/special-5.jpg" },
+  { youtubeLink: "https://youtube.com/shorts/Tm1fCPj04J8?feature=share", image: "/special-6.jpg" },
+  { youtubeLink: "https://youtube.com/shorts/GNIXVX6nCdg?feature=share", image: "/special-7.jpg" },
+  { youtubeLink: "https://youtube.com/shorts/IUbCunJiwIM?feature=share", image: "/special-8.jpg" },
+  { youtubeLink: "https://youtube.com/shorts/x4TMmFEg8F8?feature=share", image: "/special-9.jpg" },
+  { youtubeLink: "https://youtube.com/shorts/6wQNLJbSpVI?feature=share", image: "/special-10.jpg" },
+  { youtubeLink: "https://youtube.com/shorts/rPY6yTjTafo?feature=share", image: "/special-11.jpg" },
 ];
 
-// Automatically generates 33 items: /photo-1.jpg to /photo-33.jpg
-// The 28th photo is flagged to display as landscape
-const PHOTOGRAPHY = Array.from({ length: 33 }, (_, i) => ({
-  image: `/photo-${i + 1}.jpg`,
-  isLandscape: (i + 1) === 28
-}));
+// Cover-pic as the first image, followed by 33 auto-generated ones
+const PHOTOGRAPHY = [
+  { image: "/Cover-pic.jpg", isLandscape: false },
+  ...Array.from({ length: 33 }, (_, i) => ({
+    image: `/photo-${i + 1}.jpg`,
+    isLandscape: (i + 1) === 28
+  }))
+];
 
 const PACKAGES = [
   {
@@ -101,10 +109,9 @@ const PACKAGES = [
       "Luxury Delivery (Online Gallery + Story Box with Custom Pen Drive)",
       "Generational Family Portrait (Complimentary)",
       "Social Media (4 Reels + 6 Instagram Photos)",
-      "TEAM –\nMehendi/Haldi/Sangeet\n2 Photographers\n2 Cinematographers, Assistant\n\nWedding\n2 Photographers\n2 Cinematographers\n\nReception\n1 Photographer\n1 Cinematographer",
-      "Managed by Director"
+      "TEAM –\nMEHANDI, HALDI, SANGEET, ENGAGEMENT, WEDDING\n\n*PHOTOGRAPHY*\n1 LEAD PHOTOGRAPHER\n(Key Moments, Rituals, Couple Portraits & Editorial Shots)\n1 SECOND PHOTOGRAPHER\n(Candid Moments, Guests, Family, Details & Alternate Angles)\n\n*CINEMATOGRAPHY*\n1 LEAD CINEMATOGRAPHER\n(Cinematic Films, Key Rituals & Couple Portraits)\n1 SECOND CINEMATOGRAPHER\n(Candid Moments, Guests, Family, Alternate Angles & Full event cover)\n\n1 DRONE\n\nMANAGED BY DIRECTOR"
     ],
-    image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80"
+    image: "/classic_cover.jpg"
   },
   {
     id: "signature",
@@ -122,11 +129,10 @@ const PACKAGES = [
       "Guest Scanner App (live candid uploads by guests)",
       "Family & Friends Documentary (emotional stories, conversations, blessings film)",
       "E-Invitation Cards",
-      "TEAM –\nMehendi / Haldi\n1 Portrait\n1 traditional videographer, 1 Candid\n1 Cinematographer\n\nSangeet\n1 Portrait\n1 traditional videographer, 2 Candid\n2 Cinematographers, Drone\n\nWedding\n1 Portrait\n1 Editorial\n1 traditional videographer, 2 Candid\n2 Cinematographers\nDrone",
-      "Managed by Director, Creative Director, Project Manager, Stylist"
+      "TEAM –\nMEHANDI, HALDI, SANGEET, ENGAGEMENT, WEDDING\n\n*PHOTOGRAPHY*\n1 LEAD PHOTOGRAPHER\n(Key Moments, Rituals, Couple Portraits & Editorial Shots)\n1 SECOND PHOTOGRAPHER\n(Candid Moments, Guests, Family, Details & Alternate Angles)\n\n*CINEMATOGRAPHY*\n1 LEAD CINEMATOGRAPHER\n(Cinematic Films, Key Rituals & Couple Portraits)\n1 SECOND CINEMATOGRAPHER\n(Candid Moments, Guests, Family & Alternate Angles)\n1 THIRD CINEMATOGRAPHER\n(Decor Details, Ritual Close-ups, BTS & Full Event cover)\n\n1 DRONE\n\nMANAGED BY DIRECTOR"
     ],
     isPopular: true,
-    image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80"
+    image: "/signature_cover.jpg"
   },
   {
     id: "legacy",
@@ -148,37 +154,37 @@ const PACKAGES = [
       "Family & Friends Documentary (stories, conversations, blessings film)",
       "Photoshoot Backdrop (stylish setup with instant prints)",
       "Content Creator Team (2-person iPhone BTS + reels, stories, highlights + 20 days Instagram handling with 40–60 posts)",
-      "TEAM –\nMehendi & Haldi\n1 Portrait\n1 Candid, 1 Editorial\n1 traditional videographer\n2 Cinematographers\n\nSangeet & Wedding\n2 Portrait, 1 Editorial\n2 Candid\n2 traditional videographer\n2 Cinematographers\n1 FPV Drone",
-      "Managed by Director, Creative Director, Project Manager, Stylist"
+      "TEAM –\nMEHANDI, HALDI, SANGEET, ENGAGEMENT, WEDDING\n\n*PHOTOGRAPHY*\n1 LEAD PHOTOGRAPHER\n(Key Moments, Rituals, Couple Portraits & Editorial Shots)\n1 SECOND PHOTOGRAPHER\n(Candid Moments, Guests, Family, Details & Alternate Angles)\n1 THIRD PHOTOGRAPHER\n(Decor Details, Ritual Close-ups, BTS & Full Coverage Support)\n\n*CINEMATOGRAPHY*\n1 LEAD CINEMATOGRAPHER\n(Cinematic Films, Key Rituals & Couple Portraits)\n2 SECOND CINEMATOGRAPHERS\n(Candid Moments, Guests, Family & Alternate Angles)\n1 THIRD CINEMATOGRAPHER\n(Decor Details, Ritual Close-ups, BTS & Full Event cover)\n\n1 FPV DRONE\n\nMANAGED BY DIRECTOR"
     ],
-    image: "https://images.unsplash.com/photo-1583939008719-7e909a3dc8f6?auto=format&fit=crop&q=80"
+    image: "/legacy_cover.jpg"
   }
 ];
 
 const TESTIMONIALS = [
   {
     quote: "Shaadi Lens didn't just film our wedding; they captured the soul of our family. Watching the film feels like reliving the magic all over again.",
-    initial: "A",
-    name: "Ananya & Rahul",
-    details: "Udaipur, 2024"
+    initial: "R",
+    name: "Rohan & Priya"
   },
   {
-    quote: "The editorial shoot made us feel like royalty. They have an unparalleled eye for detail, blending raw candids with high-end magazine aesthetics seamlessly.",
-    initial: "M",
-    name: "Meera & Kabir",
-    details: "Goa, 2023"
-  },
-  {
-    quote: "Watching our cinematic feature film was an absolute emotional rollercoaster. It's not just a wedding video; it's a legacy piece we'll cherish for generations.",
+    quote: "Honestly, we were nervous before booking because there are so many wedding photographers out there. But Shaadi Lens completely changed our expectations. The team didn’t feel like vendors, they felt like friends who genuinely cared. The film they delivered made my parents emotional — that’s when we knew we made the right choice.",
     initial: "S",
-    name: "Sanya & Vikram",
-    details: "Jaipur, 2024"
+    name: "Shrey & Ashmita"
   },
   {
-    quote: "Their team blended into the background yet missed absolutely nothing. The final photos and reels are stunning, perfectly capturing the chaotic joy of our big day.",
-    initial: "N",
-    name: "Neha & Aryan",
-    details: "Delhi, 2023"
+    quote: "We didn’t want typical slow-motion wedding videos. We wanted something stylish, modern, and aesthetic — and Shaadi Lens nailed it. Reels, trailer, everything looked Instagram-ready and cinematic.",
+    initial: "J",
+    name: "Jonathan & Myra"
+  },
+  {
+    quote: "Not gonna lie, we thought it was a bit premium at first. But after seeing the final output, it was worth every rupee. The quality, editing, and detailing is something you don’t usually see in Indian weddings.",
+    initial: "S",
+    name: "Sarah & Ashu"
+  },
+  {
+    quote: "The best part is they captured moments we didn’t even realize were happening. Watching the film felt like discovering our own wedding again.",
+    initial: "M",
+    name: "Meera & Kabir"
   }
 ];
 
@@ -301,10 +307,10 @@ const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) 
     };
   }, [isOpen]);
 
-  // Helper to extract YouTube video ID from various link formats
+  // Helper to extract YouTube video ID from various link formats (updated to support Shorts)
   const getYoutubeId = (url: string) => {
     if (!url) return null;
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
   };
@@ -319,7 +325,7 @@ const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) 
     }
   };
 
-  // Ensure 28th photo renders as landscape even in portrait sections
+  // Ensure landscape photos render correctly even in portrait sections
   const layoutClasses = (isPortrait && !item.isLandscape)
     ? "w-[160px] sm:w-[220px] md:w-[280px] aspect-[9/16]"
     : "w-[240px] sm:w-[320px] md:w-[400px] aspect-video";
@@ -443,7 +449,7 @@ const Hero = () => {
     <section id="home" className="relative min-h-[70vh] md:h-screen w-full overflow-hidden flex items-center">
       <div className="absolute inset-0 bg-black">
         <img 
-          src="/photo-28.jpg" 
+          src="/IMG_2551.jpg" 
           className="w-full h-full object-cover opacity-60 animate-slow-zoom"
           alt="Hero background"
         />
@@ -483,6 +489,16 @@ const Hero = () => {
 };
 
 const PackageCard = ({ pkg }: { pkg: any }) => {
+  // Utility function to format parts of the text marked with * into bold span tags
+  const formatBoldText = (text: string) => {
+    return text.split(/(\*[^*]+\*)/g).map((part, index) => {
+      if (part.startsWith('*') && part.endsWith('*')) {
+        return <span key={index} className="font-bold text-[#d4af37] tracking-widest uppercase">{part.slice(1, -1)}</span>;
+      }
+      return <React.Fragment key={index}>{part}</React.Fragment>;
+    });
+  };
+
   return (
     <div 
       className={`relative bg-white/5 backdrop-blur-md rounded-2xl overflow-hidden flex flex-col h-full border border-white/10 group transition-all duration-700 hover:-translate-y-4 ${pkg.isPopular ? 'border-[#d4af37]/40 shadow-[0_0_50px_rgba(197,160,89,0.15)]' : ''}`}
@@ -508,13 +524,13 @@ const PackageCard = ({ pkg }: { pkg: any }) => {
             let title = feature;
             let desc = "";
 
-            if (feature.includes(" (")) {
+            if (feature.startsWith("TEAM –")) {
+              title = "TEAM";
+              desc = feature.substring(6).trim();
+            } else if (feature.includes(" (")) {
               const splitIndex = feature.indexOf(" (");
               title = feature.substring(0, splitIndex);
               desc = feature.substring(splitIndex).trim();
-            } else if (feature.startsWith("TEAM –")) {
-              title = "TEAM";
-              desc = feature.substring(6).trim();
             }
 
             return (
@@ -523,11 +539,11 @@ const PackageCard = ({ pkg }: { pkg: any }) => {
                 <div className="font-light whitespace-pre-line flex flex-col w-full">
                   {desc ? (
                     <>
-                      <span className="font-bold text-white/95 text-[13px] md:text-sm tracking-wide">{title}</span>
-                      <span className="text-white/50 mt-1 leading-relaxed">{desc}</span>
+                      <span className="font-bold text-white/95 text-[13px] md:text-sm tracking-wide">{formatBoldText(title)}</span>
+                      <span className="text-white/50 mt-1 leading-relaxed">{formatBoldText(desc)}</span>
                     </>
                   ) : (
-                    <span className="text-white/80 leading-relaxed">{title}</span>
+                    <span className="text-white/80 leading-relaxed">{formatBoldText(title)}</span>
                   )}
                 </div>
               </li>
@@ -548,7 +564,7 @@ const Footer = () => {
     <footer className="bg-[#141414] pt-16 md:pt-32 pb-12 px-4 md:px-12 border-t border-white/5 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#d4af37]/30 to-transparent" />
       
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16 mb-16 md:mb-24">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-16 md:mb-24">
         <div className="col-span-1 md:col-span-1">
           <h2 className="font-display text-4xl text-[#d4af37] mb-8 tracking-tighter">SHAADI LENS</h2>
           <p className="text-white/40 text-sm leading-relaxed font-light mb-8 max-w-xs">
@@ -577,17 +593,8 @@ const Footer = () => {
         <div>
           <h4 className="font-bold text-white mb-8 uppercase text-[10px] tracking-[0.4em] text-[#d4af37]/80">Navigation</h4>
           <ul className="space-y-4 text-white/40 text-sm font-light">
-            {['Home', 'Portfolio', 'Services', 'Packages', 'Custom Plan'].map((item) => (
+            {['Home', 'Portfolio', 'Packages', 'Custom Plan', 'Services', 'Add-Ons'].map((item) => (
               <li key={item}><a href={`#${item.toLowerCase().replace(' ', '-')}`} className="hover:text-[#d4af37] transition-colors inline-block relative after:content-[''] after:absolute after:w-full after:h-[1px] after:bg-[#d4af37] after:bottom-0 after:left-0 after:scale-x-0 hover:after:scale-x-100 after:origin-right hover:after:origin-left after:transition-transform after:duration-300">{item}</a></li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="font-bold text-white mb-8 uppercase text-[10px] tracking-[0.4em] text-[#d4af37]/80">Experience</h4>
-          <ul className="space-y-4 text-white/40 text-sm font-light">
-            {['Cinematic Films', 'Photography', 'Ritual Diaries', 'Legacy Films'].map((item) => (
-              <li key={item} className="hover:text-white transition-colors cursor-pointer">{item}</li>
             ))}
           </ul>
         </div>
@@ -743,37 +750,6 @@ export default function App() {
             </div>
           </section>
 
-          {/* Our Process Section */}
-          <section id="process" className="py-16 md:py-32 px-4 md:px-12">
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-12 md:mb-20">
-                <h2 className="font-display text-4xl md:text-8xl mb-4 md:mb-6 tracking-tight uppercase text-white">OUR <span className="bg-gradient-to-r from-[#d4af37] to-[#f3e5ab] text-transparent bg-clip-text">PROCESS</span></h2>
-                <p className="text-white/50 max-w-2xl mx-auto text-sm md:text-lg font-light tracking-wide">A seamless journey from our first meeting to your cinematic premiere.</p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-                {[
-                  { step: "01", title: "The Script", description: "We meet to understand your story, your vibe, and your family's unique dynamics." },
-                  { step: "02", title: "The Production", description: "Our elite team captures your wedding with high-end cinema gear and a discreet presence." },
-                  { step: "03", title: "The Edit", description: "Meticulous color grading, sound design, and narrative editing to create your masterpiece." },
-                  { step: "04", title: "The Premiere", description: "Your cinematic legacy is delivered in premium formats for you to relive forever." },
-                ].map((item, i) => (
-                  <div key={i} className="relative p-8 md:p-10 bg-white/5 backdrop-blur-md rounded-2xl group overflow-hidden border border-white/10 transition-all duration-700">
-                    <div className="absolute -top-6 -right-6 text-[6rem] md:text-[10rem] font-display text-white/[0.02] group-hover:text-[#d4af37]/[0.04] transition-colors duration-1000">
-                      {item.step}
-                    </div>
-                    <div className="relative z-10">
-                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#d4af37] text-black flex items-center justify-center font-bold mb-6 md:mb-8 shadow-xl">
-                        {item.step}
-                      </div>
-                      <h4 className="font-display text-xl md:text-2xl mb-3 md:mb-4 tracking-wide uppercase text-white group-hover:text-[#d4af37] transition-colors duration-500">{item.title}</h4>
-                      <p className="text-white/40 text-xs md:text-sm leading-relaxed font-light group-hover:text-white/60 transition-colors duration-500">{item.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
           {/* Testimonials Row */}
           <section className="py-16 md:py-32 bg-gradient-to-b from-transparent to-black/50">
              <h2 className="text-xl md:text-4xl font-display mb-8 md:mb-10 px-4 md:px-12 tracking-widest uppercase text-white/80">WHAT FAMILIES ARE SAYING</h2>
@@ -790,7 +766,6 @@ export default function App() {
                       <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-[#d4af37]/10 flex items-center justify-center text-[#d4af37] font-display text-lg md:text-2xl border border-[#d4af37]/20">{testimonial.initial}</div>
                       <div>
                         <p className="text-xs md:text-lg font-bold tracking-widest uppercase text-white">{testimonial.name}</p>
-                        <p className="text-[8px] md:text-xs text-white/30 uppercase tracking-[0.3em]">{testimonial.details}</p>
                       </div>
                     </div>
                   </div>
