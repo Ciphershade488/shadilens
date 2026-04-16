@@ -109,7 +109,7 @@ const PACKAGES = [
       "Luxury Delivery (Online Gallery + Story Box with Custom Pen Drive)",
       "Generational Family Portrait (Complimentary)",
       "Social Media (4 Reels + 6 Instagram Photos)",
-      "TEAM –\nMEHANDI, HALDI, SANGEET, ENGAGEMENT, WEDDING\n\n*PHOTOGRAPHY*\n1 LEAD PHOTOGRAPHER\n(Key Moments, Rituals, Couple Portraits & Editorial Shots)\n1 SECOND PHOTOGRAPHER\n(Candid Moments, Guests, Family, Details & Alternate Angles)\n\n*CINEMATOGRAPHY*\n1 LEAD CINEMATOGRAPHER\n(Cinematic Films, Key Rituals & Couple Portraits)\n1 SECOND CINEMATOGRAPHER\n(Candid Moments, Guests, Family, Alternate Angles & Full event cover)\n\n1 DRONE\n\nMANAGED BY DIRECTOR"
+      "TEAM –\nMEHANDI, HALDI, SANGEET, ENGAGEMENT, WEDDING\n\n*PHOTOGRAPHY*\n**1 LEAD PHOTOGRAPHER**\n(Key Moments, Rituals, Couple Portraits & Editorial Shots)\n**1 SECOND PHOTOGRAPHER**\n(Candid Moments, Guests, Family, Details & Alternate Angles)\n\n*CINEMATOGRAPHY*\n**1 LEAD CINEMATOGRAPHER**\n(Cinematic Films, Key Rituals & Couple Portraits)\n**1 SECOND CINEMATOGRAPHER**\n(Candid Moments, Guests, Family, Alternate Angles & Full event cover)\n\n**1 DRONE**\n\n**MANAGED BY DIRECTOR**"
     ],
     image: "/classic_cover.jpg"
   },
@@ -129,7 +129,7 @@ const PACKAGES = [
       "Guest Scanner App (live candid uploads by guests)",
       "Family & Friends Documentary (emotional stories, conversations, blessings film)",
       "E-Invitation Cards",
-      "TEAM –\nMEHANDI, HALDI, SANGEET, ENGAGEMENT, WEDDING\n\n*PHOTOGRAPHY*\n1 LEAD PHOTOGRAPHER\n(Key Moments, Rituals, Couple Portraits & Editorial Shots)\n1 SECOND PHOTOGRAPHER\n(Candid Moments, Guests, Family, Details & Alternate Angles)\n\n*CINEMATOGRAPHY*\n1 LEAD CINEMATOGRAPHER\n(Cinematic Films, Key Rituals & Couple Portraits)\n1 SECOND CINEMATOGRAPHER\n(Candid Moments, Guests, Family & Alternate Angles)\n1 THIRD CINEMATOGRAPHER\n(Decor Details, Ritual Close-ups, BTS & Full Event cover)\n\n1 DRONE\n\nMANAGED BY DIRECTOR"
+      "TEAM –\nMEHANDI, HALDI, SANGEET, ENGAGEMENT, WEDDING\n\n*PHOTOGRAPHY*\n**1 LEAD PHOTOGRAPHER**\n(Key Moments, Rituals, Couple Portraits & Editorial Shots)\n**1 SECOND PHOTOGRAPHER**\n(Candid Moments, Guests, Family, Details & Alternate Angles)\n\n*CINEMATOGRAPHY*\n**1 LEAD CINEMATOGRAPHER**\n(Cinematic Films, Key Rituals & Couple Portraits)\n**1 SECOND CINEMATOGRAPHER**\n(Candid Moments, Guests, Family & Alternate Angles)\n**1 THIRD CINEMATOGRAPHER**\n(Decor Details, Ritual Close-ups, BTS & Full Event cover)\n\n**1 DRONE**\n\n**MANAGED BY DIRECTOR**"
     ],
     isPopular: true,
     image: "/signature_cover.jpg"
@@ -154,7 +154,7 @@ const PACKAGES = [
       "Family & Friends Documentary (stories, conversations, blessings film)",
       "Photoshoot Backdrop (stylish setup with instant prints)",
       "Content Creator Team (2-person iPhone BTS + reels, stories, highlights + 20 days Instagram handling with 40–60 posts)",
-      "TEAM –\nMEHANDI, HALDI, SANGEET, ENGAGEMENT, WEDDING\n\n*PHOTOGRAPHY*\n1 LEAD PHOTOGRAPHER\n(Key Moments, Rituals, Couple Portraits & Editorial Shots)\n1 SECOND PHOTOGRAPHER\n(Candid Moments, Guests, Family, Details & Alternate Angles)\n1 THIRD PHOTOGRAPHER\n(Decor Details, Ritual Close-ups, BTS & Full Coverage Support)\n\n*CINEMATOGRAPHY*\n1 LEAD CINEMATOGRAPHER\n(Cinematic Films, Key Rituals & Couple Portraits)\n2 SECOND CINEMATOGRAPHERS\n(Candid Moments, Guests, Family & Alternate Angles)\n1 THIRD CINEMATOGRAPHER\n(Decor Details, Ritual Close-ups, BTS & Full Event cover)\n\n1 FPV DRONE\n\nMANAGED BY DIRECTOR"
+      "TEAM –\nMEHANDI, HALDI, SANGEET, ENGAGEMENT, WEDDING\n\n*PHOTOGRAPHY*\n**1 LEAD PHOTOGRAPHER**\n(Key Moments, Rituals, Couple Portraits & Editorial Shots)\n**1 SECOND PHOTOGRAPHER**\n(Candid Moments, Guests, Family, Details & Alternate Angles)\n**1 THIRD PHOTOGRAPHER**\n(Decor Details, Ritual Close-ups, BTS & Full Coverage Support)\n\n*CINEMATOGRAPHY*\n**1 LEAD CINEMATOGRAPHER**\n(Cinematic Films, Key Rituals & Couple Portraits)\n**2 SECOND CINEMATOGRAPHERS**\n(Candid Moments, Guests, Family & Alternate Angles)\n**1 THIRD CINEMATOGRAPHER**\n(Decor Details, Ritual Close-ups, BTS & Full Event cover)\n\n**1 FPV DRONE**\n\n**MANAGED BY DIRECTOR**"
     ],
     image: "/legacy_cover.jpg"
   }
@@ -489,11 +489,15 @@ const Hero = () => {
 };
 
 const PackageCard = ({ pkg }: { pkg: any }) => {
-  // Utility function to format parts of the text marked with * into bold span tags
+  // Utility function to format parts of the text
+  // *text* for Gold Bold
+  // **text** for White Bold
   const formatBoldText = (text: string) => {
-    return text.split(/(\*[^*]+\*)/g).map((part, index) => {
-      if (part.startsWith('*') && part.endsWith('*')) {
-        return <span key={index} className="font-bold text-[#d4af37] tracking-widest uppercase">{part.slice(1, -1)}</span>;
+    return text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <span key={index} className="font-bold text-white tracking-wide">{part.slice(2, -2)}</span>;
+      } else if (part.startsWith('*') && part.endsWith('*')) {
+        return <span key={index} className="font-bold text-[#d4af37] tracking-wide">{part.slice(1, -1)}</span>;
       }
       return <React.Fragment key={index}>{part}</React.Fragment>;
     });
@@ -521,13 +525,28 @@ const PackageCard = ({ pkg }: { pkg: any }) => {
         
         <ul className="space-y-4 md:space-y-5 mb-8 md:mb-10 flex-1">
           {pkg.features.map((feature: string, i: number) => {
+            // Special detailed rendering for the TEAM section
+            if (feature.startsWith("TEAM –")) {
+              const lines = feature.substring(6).trim().split('\n');
+              return (
+                <li key={i} className="flex items-start gap-3 md:gap-4 text-xs md:text-sm text-white/70 group-hover:text-white transition-colors duration-500">
+                  <CheckCircle2 size={16} className="text-[#d4af37] shrink-0 mt-0.5" />
+                  <div className="font-light flex flex-col w-full">
+                    <span className="font-bold text-white/95 text-[13px] md:text-sm tracking-wide mb-3">TEAM</span>
+                    {lines.map((line, j) => (
+                      <div key={j} className={`${line.trim() === '' ? 'h-4' : 'mb-1'} leading-snug`}>
+                        {line.trim() !== '' && formatBoldText(line)}
+                      </div>
+                    ))}
+                  </div>
+                </li>
+              );
+            }
+
             let title = feature;
             let desc = "";
 
-            if (feature.startsWith("TEAM –")) {
-              title = "TEAM";
-              desc = feature.substring(6).trim();
-            } else if (feature.includes(" (")) {
+            if (feature.includes(" (")) {
               const splitIndex = feature.indexOf(" (");
               title = feature.substring(0, splitIndex);
               desc = feature.substring(splitIndex).trim();
@@ -536,14 +555,14 @@ const PackageCard = ({ pkg }: { pkg: any }) => {
             return (
               <li key={i} className="flex items-start gap-3 md:gap-4 text-xs md:text-sm text-white/70 group-hover:text-white transition-colors duration-500">
                 <CheckCircle2 size={16} className="text-[#d4af37] shrink-0 mt-0.5" />
-                <div className="font-light whitespace-pre-line flex flex-col w-full">
+                <div className="font-light flex flex-col w-full">
                   {desc ? (
                     <>
-                      <span className="font-bold text-white/95 text-[13px] md:text-sm tracking-wide">{formatBoldText(title)}</span>
-                      <span className="text-white/50 mt-1 leading-relaxed">{formatBoldText(desc)}</span>
+                      <span className="font-bold text-white/95 text-[13px] md:text-sm tracking-wide mb-0.5">{title}</span>
+                      <span className="text-white/50 leading-relaxed">{desc}</span>
                     </>
                   ) : (
-                    <span className="text-white/80 leading-relaxed">{formatBoldText(title)}</span>
+                    <span className="text-white/80 leading-relaxed">{title}</span>
                   )}
                 </div>
               </li>
