@@ -294,6 +294,7 @@ const Navbar = () => {
 
 const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false); // Controls the lazy-loaded video
 
   // Prevent body scrolling when the image modal is open
   useEffect(() => {
@@ -307,7 +308,7 @@ const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) 
     };
   }, [isOpen]);
 
-  // Helper to extract YouTube video ID from various link formats (updated to support Shorts)
+  // Helper to extract YouTube video ID from various link formats
   const getYoutubeId = (url: string) => {
     if (!url) return null;
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
@@ -316,10 +317,13 @@ const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) 
   };
 
   const ytId = getYoutubeId(item.youtubeLink);
+  
+  // Auto-fetch YouTube thumbnail if it's a video, otherwise use the provided image
+  const thumbnailUrl = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : item.image;
 
   const handleClick = () => {
-    if (item.youtubeLink) {
-      window.open(item.youtubeLink, '_blank');
+    if (ytId) {
+      setIsPlaying(true); // Switch from thumbnail to actual YouTube player on click
     } else {
       setIsOpen(true);
     }
@@ -334,40 +338,52 @@ const NetflixCard = ({ item, isPortrait }: { item: any, isPortrait?: boolean }) 
     <>
       {/* Thumbnail Card */}
       <div
-        onClick={handleClick}
-        className={`relative flex-shrink-0 ${layoutClasses} rounded-md overflow-hidden cursor-pointer group bg-[#141414] hover:scale-105 hover:z-50 transition-all duration-400 ease-out`}
+        onClick={!isPlaying ? handleClick : undefined}
+        className={`relative flex-shrink-0 ${layoutClasses} rounded-md overflow-hidden transition-all duration-400 ease-out ${!isPlaying ? 'cursor-pointer group bg-[#141414] hover:scale-105 hover:z-50' : 'bg-black'}`}
       >
-        {/* If no youtube video, render image as base. Will hide broken icon via onError if missing */}
-        {!ytId && (
+        {/* Image Thumbnail - hidden while the video is playing */}
+        {!isPlaying && (
           <img 
-            src={item.image} 
+            src={thumbnailUrl} 
             alt="" 
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 text-transparent" 
-            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            onError={(e) => { 
+              // Fallback to local image if YT thumbnail fails
+              if (item.image && e.currentTarget.src !== item.image) {
+                e.currentTarget.src = item.image;
+              } else {
+                e.currentTarget.style.display = 'none'; 
+              }
+            }}
           />
         )}
 
-        {/* If youtubeLink is provided, overlay a muted, autoplaying iframe */}
-        {ytId && (
-          <div className="absolute inset-0 pointer-events-none overflow-hidden bg-[#141414]">
+        {/* Lazy-Loaded Iframe - Only loads and auto-plays AFTER the user clicks */}
+        {ytId && isPlaying && (
+          <div className="absolute inset-0 z-10 bg-black">
             <iframe
-              src={`https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}&controls=0&showinfo=0&rel=0&playsinline=1`}
-              className="absolute top-1/2 left-1/2 w-[150%] h-[150%] md:w-[130%] md:h-[130%] -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-80"
+              src={`https://www.youtube.com/embed/${ytId}?autoplay=1&controls=1&rel=0&playsinline=1`}
+              className="w-full h-full"
               frameBorder="0"
-              allow="autoplay; encrypted-media"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>
           </div>
         )}
         
-        <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        <div className="absolute inset-0 border-2 border-[#d4af37]/0 group-hover:border-[#d4af37]/30 transition-all duration-500 rounded-md pointer-events-none" />
+        {/* Gradients and borders - disabled when playing */}
+        {!isPlaying && (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <div className="absolute inset-0 border-2 border-[#d4af37]/0 group-hover:border-[#d4af37]/30 transition-all duration-500 rounded-md pointer-events-none" />
+          </>
+        )}
         
         {/* Play Icon Overlay specifically for YouTube Links */}
-        {ytId && (
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-               <Play className="text-white w-6 h-6 ml-1" fill="currentColor" />
+        {ytId && !isPlaying && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/40 transition-colors duration-500">
+            <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#141414]/60 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-2xl group-hover:scale-110 group-hover:bg-[#d4af37]/90 group-hover:border-[#d4af37] transition-all duration-300">
+               <Play className="text-white w-5 h-5 md:w-6 md:h-6 ml-1 group-hover:text-black transition-colors" fill="currentColor" />
             </div>
           </div>
         )}
